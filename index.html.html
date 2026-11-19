@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="my">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>နှစ်ကုန်ရန် ကျန်ချိန်</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--text:#1d1b16;--muted:#6f6a5d;--accent:#d9480f;--track:#e6e1d4;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14130f;--card:#1f1d17;--text:#f2efe6;--muted:#a49f90;--accent:#ff8a4c;--track:#34312a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14130f;--card:#1f1d17;--text:#f2efe6;--muted:#a49f90;--accent:#ff8a4c;--track:#34312a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Noto Sans Myanmar',system-ui,sans-serif;min-height:100vh;display:flex;justify-content:center;padding:24px 16px;line-height:1.8}
+main{width:100%;max-width:520px;position:relative;z-index:1}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+h1{font-size:1.5rem;margin:8px 0 4px;text-align:center}
+.sub{color:var(--muted);text-align:center;margin:0 0 24px;font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.box{background:var(--card);border-radius:16px;padding:18px 8px;text-align:center}
+.num{font-size:2.6rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.2}
+.lbl{color:var(--muted);font-size:.9rem}
+.card{background:var(--card);border-radius:16px;padding:18px;margin-top:12px}
+.bar{height:12px;background:var(--track);border-radius:99px;overflow:hidden;margin:10px 0 6px}
+.fill{height:100%;background:var(--accent);width:0;border-radius:99px;transition:width .6s}
+.row{display:flex;justify-content:space-between;color:var(--muted);font-size:.9rem}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.stats b{display:block;font-size:1.4rem;color:var(--text);font-variant-numeric:tabular-nums}
+.stats span{color:var(--muted);font-size:.85rem}
+.msg{text-align:center;margin-top:16px;color:var(--muted);font-size:.95rem}
+.box{border:1px solid transparent;animation:glow 3s ease-in-out infinite;backdrop-filter:blur(6px)}
+.box:nth-child(2){animation-delay:.4s}.box:nth-child(3){animation-delay:.8s}.box:nth-child(4){animation-delay:1.2s}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 transparent;border-color:var(--track)}50%{box-shadow:0 0 22px -4px var(--accent);border-color:var(--accent)}}
+.pop{animation:pop .45s cubic-bezier(.2,1.6,.4,1)}
+@keyframes pop{0%{transform:translateY(-8px) scale(.85);opacity:.3}100%{transform:none;opacity:1}}
+h1{background:linear-gradient(90deg,var(--text),var(--accent),var(--text));background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite}
+@keyframes shine{to{background-position:200% 0}}
+.fill{background:linear-gradient(90deg,var(--accent),#ffd43b,var(--accent));background-size:200% 100%;animation:shine 3s linear infinite}
+.card,.box{animation-fill-mode:both}
+.card{animation:rise .8s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+<main>
+  <h1 id="title">နှစ်ကုန်ရန် ကျန်ချိန်</h1>
+  <p class="sub" id="sub"></p>
+  <div class="grid">
+    <div class="box"><div class="num" id="d">0</div><div class="lbl">ရက်</div></div>
+    <div class="box"><div class="num" id="h">0</div><div class="lbl">နာရီ</div></div>
+    <div class="box"><div class="num" id="m">0</div><div class="lbl">မိနစ်</div></div>
+    <div class="box"><div class="num" id="s">0</div><div class="lbl">စက္ကန့်</div></div>
+  </div>
+  <div class="card">
+    <div class="row"><span>ဒီနှစ် ကုန်ဆုံးပြီး</span><span id="pct">0%</span></div>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+  </div>
+  <div class="card stats">
+    <div><b id="wk">0</b><span>ရက်သတ္တပတ်</span></div>
+    <div><b id="we">0</b><span>စနေ၊တနင်္ဂနွေ</span></div>
+    <div><b id="hr">0</b><span>စုစုပေါင်းနာရီ</span></div>
+  </div>
+  <p class="msg" id="msg"></p>
+</main>
+<script>
+(function(){
+  var year=new Date().getFullYear();
+  var start=new Date(year,0,1), end=new Date(year+1,0,1);
+  var $=function(i){return document.getElementById(i)};
+  var mm="၀၁၂၃၄၅၆၇၈၉";
+  function my(n){return String(n).replace(/\d/g,function(c){return mm[c]})}
+  $("title").textContent=my(year)+" ပြီးဆုံးရန် ကျန်ချိန်";
+  $("sub").textContent=my(year+1)+" ဇန်နဝါရီ ၁ ရက် အထိ";
+  function tick(){
+    var now=new Date(), diff=end-now;
+    if(diff<=0){
+      ["d","h","m","s"].forEach(function(i){$(i).textContent=my(0)});
+      $("msg").textContent="🎉 မင်္ဂလာရှိသော နှစ်သစ်ကူးပါစေ!";
+      return;
+    }
+    var sec=Math.floor(diff/1000);
+    $("d").textContent=my(Math.floor(sec/86400));
+    $("h").textContent=my(Math.floor(sec%86400/3600));
+    $("m").textContent=my(Math.floor(sec%3600/60));
+    var sv=my(sec%60);
+    if($("s").textContent!==sv){$("s").textContent=sv;$("s").classList.remove("pop");void $("s").offsetWidth;$("s").classList.add("pop");}
+    var pct=(now-start)/(end-start)*100;
+    $("pct").textContent=my(pct.toFixed(1))+"%";
+    $("fill").style.width=pct+"%";
+    var days=Math.ceil(diff/86400000);
+    $("wk").textContent=my(Math.floor(days/7));
+    var we=0;
+    for(var i=0;i<days;i++){
+      var dt=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i).getDay();
+      if(dt===0||dt===6)we++;
+    }
+    $("we").textContent=my(we);
+    $("hr").textContent=my(Math.floor(sec/3600).toLocaleString("en-US"));
+    $("msg").textContent="အချိန်ကို တန်ဖိုးရှိရှိ သုံးကြစို့ ⏳";
+  }
+  /* AI neural-network background */
+  var cv=$("bg"),cx=cv.getContext("2d"),W,H,pts=[],ptr={x:-999,y:-999};
+  var still=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function size(){
+    var r=window.devicePixelRatio||1;W=innerWidth;H=innerHeight;
+    cv.width=W*r;cv.height=H*r;cx.setTransform(r,0,0,r,0,0);
+    var n=Math.min(70,Math.floor(W*H/14000));pts=[];
+    for(var i=0;i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4});
+  }
+  addEventListener("resize",size);size();
+  function move(e){var t=e.touches?e.touches[0]:e;ptr.x=t.clientX;ptr.y=t.clientY}
+  addEventListener("pointermove",move);addEventListener("touchmove",move,{passive:true});
+  addEventListener("pointerleave",function(){ptr.x=ptr.y=-999});
+  function frame(t){
+    var col=getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()||"#d9480f";
+    cx.clearRect(0,0,W,H);cx.strokeStyle=col;cx.fillStyle=col;
+    for(var i=0;i<pts.length;i++){
+      var p=pts[i];
+      if(!still){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;}
+      var pulse=.5+.5*Math.sin(t/700+i);
+      cx.globalAlpha=.25+.45*pulse;cx.beginPath();cx.arc(p.x,p.y,2+pulse*1.5,0,6.283);cx.fill();
+      for(var j=i+1;j<pts.length;j++){
+        var q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<130){cx.globalAlpha=(1-d/130)*.3;cx.beginPath();cx.moveTo(p.x,p.y);cx.lineTo(q.x,q.y);cx.stroke();}
+      }
+      var mx=p.x-ptr.x,my2=p.y-ptr.y,md=Math.sqrt(mx*mx+my2*my2);
+      if(md<170){cx.globalAlpha=(1-md/170)*.6;cx.beginPath();cx.moveTo(p.x,p.y);cx.lineTo(ptr.x,ptr.y);cx.stroke();}
+    }
+    cx.globalAlpha=1;
+    if(!still)requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  tick(); setInterval(tick,1000);
+})();
+</script>
+</body>
+</html>
