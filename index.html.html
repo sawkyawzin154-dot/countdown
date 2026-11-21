@@ -3,135 +3,182 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="နှစ်ကုန်ဖို့ ကျန်တဲ့ ရက်၊ နာရီ၊ မိနစ်၊ စက္ကန့်ကို တိုက်ရိုက် ရေတွက်ပြတဲ့ countdown website။ နှစ်သစ်ကူးချိန်မှာ မီးပန်းပေါက်မယ် 🎆">
+<meta name="theme-color" content="#0b0d14">
+<link rel="canonical" href="https://sawkyawzin154-dot.github.io/countdown/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="နှစ်ကုန်ရန် ကျန်ချိန် ⏳">
+<meta property="og:description" content="နှစ်ကုန်ဖို့ ဘယ်လောက်ကျန်သေးလဲ? တိုက်ရိုက် countdown ကြည့်ရန်">
+<meta property="og:url" content="https://sawkyawzin154-dot.github.io/countdown/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E⏳%3C/text%3E%3C/svg%3E">
 <title>နှစ်ကုန်ရန် ကျန်ချိန်</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Myanmar:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f6f4ef;--card:#fff;--text:#1d1b16;--muted:#6f6a5d;--accent:#d9480f;--track:#e6e1d4;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14130f;--card:#1f1d17;--text:#f2efe6;--muted:#a49f90;--accent:#ff8a4c;--track:#34312a;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#14130f;--card:#1f1d17;--text:#f2efe6;--muted:#a49f90;--accent:#ff8a4c;--track:#34312a;color-scheme:dark}
+:root{--bg1:#0b0d14;--bg2:#1b2230;--card:rgba(255,255,255,.06);--box:rgba(10,10,14,.72);--text:#f4f1ec;--muted:#aab0bf;--o1:#ff7a2f;--o2:#ffc58a;--track:rgba(255,255,255,.14);--dot:255,150,80;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg1:#f6f2ec;--bg2:#e7ebf3;--card:rgba(255,255,255,.7);--box:rgba(255,255,255,.85);--text:#1f1b16;--muted:#6a6f7d;--o1:#e5601a;--o2:#f5a263;--track:rgba(0,0,0,.1);--dot:229,96,26;color-scheme:light}}
+:root[data-theme="light"]{--bg1:#f6f2ec;--bg2:#e7ebf3;--card:rgba(255,255,255,.7);--box:rgba(255,255,255,.85);--text:#1f1b16;--muted:#6a6f7d;--o1:#e5601a;--o2:#f5a263;--track:rgba(0,0,0,.1);--dot:229,96,26;color-scheme:light}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:'Noto Sans Myanmar',system-ui,sans-serif;min-height:100vh;display:flex;justify-content:center;padding:24px 16px;line-height:1.8}
-main{width:100%;max-width:520px;position:relative;z-index:1}
-#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
-h1{font-size:1.5rem;margin:8px 0 4px;text-align:center}
-.sub{color:var(--muted);text-align:center;margin:0 0 24px;font-size:.95rem}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.box{background:var(--card);border-radius:16px;padding:18px 8px;text-align:center}
-.num{font-size:2.6rem;font-weight:700;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.2}
-.lbl{color:var(--muted);font-size:.9rem}
-.card{background:var(--card);border-radius:16px;padding:18px;margin-top:12px}
-.bar{height:12px;background:var(--track);border-radius:99px;overflow:hidden;margin:10px 0 6px}
-.fill{height:100%;background:var(--accent);width:0;border-radius:99px;transition:width .6s}
-.row{display:flex;justify-content:space-between;color:var(--muted);font-size:.9rem}
+html,body{margin:0}
+body{min-height:100vh;background:linear-gradient(160deg,var(--bg1),var(--bg2));color:var(--text);font-family:'Noto Sans Myanmar',system-ui,sans-serif;line-height:1.8;overflow-x:hidden}
+canvas{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+main{position:relative;z-index:1;max-width:540px;margin:0 auto;padding:28px 16px 40px}
+h1{margin:0;text-align:center;font-size:1.6rem;background:linear-gradient(90deg,var(--o1),var(--o2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{text-align:center;color:var(--muted);margin:2px 0 22px;font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.box{position:relative;background:var(--box);border-radius:18px;padding:22px 8px 16px;text-align:center;border:1.5px solid var(--o1);opacity:0;transform:translateY(18px);animation:rise .7s ease forwards}
+.box::after{content:"";position:absolute;inset:-1px;border-radius:18px;box-shadow:0 0 18px 2px var(--o1),inset 0 0 14px rgba(255,122,47,.25);opacity:.7;pointer-events:none;animation:glow 3s ease-in-out infinite}
+.box:nth-child(2){animation-delay:.1s}.box:nth-child(3){animation-delay:.2s}.box:nth-child(4){animation-delay:.3s}
+.box:nth-child(2)::after{animation-delay:.7s}.box:nth-child(3)::after{animation-delay:1.4s}.box:nth-child(4)::after{animation-delay:2.1s}
+@keyframes rise{to{opacity:1;transform:none}}
+@keyframes glow{50%{opacity:.25}}
+.num{font-size:3rem;font-weight:700;line-height:1.2;color:var(--o2);font-variant-numeric:tabular-nums}
+.lbl{color:var(--text);font-size:.95rem;margin-top:2px}
+.card{background:var(--card);border-radius:16px;padding:18px;margin-top:16px;border:1px solid var(--track)}
+.row{display:flex;justify-content:space-between;color:var(--text);font-size:.95rem}
+.row b{color:var(--o2)}
+.bar{height:12px;background:var(--track);border-radius:99px;overflow:hidden;margin-top:10px}
+.fill{height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--o1),var(--o2));transition:width 1s}
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
-.stats b{display:block;font-size:1.4rem;color:var(--text);font-variant-numeric:tabular-nums}
-.stats span{color:var(--muted);font-size:.85rem}
-.msg{text-align:center;margin-top:16px;color:var(--muted);font-size:.95rem}
-.box{border:1px solid transparent;animation:glow 3s ease-in-out infinite;backdrop-filter:blur(6px)}
-.box:nth-child(2){animation-delay:.4s}.box:nth-child(3){animation-delay:.8s}.box:nth-child(4){animation-delay:1.2s}
-@keyframes glow{0%,100%{box-shadow:0 0 0 0 transparent;border-color:var(--track)}50%{box-shadow:0 0 22px -4px var(--accent);border-color:var(--accent)}}
-.pop{animation:pop .45s cubic-bezier(.2,1.6,.4,1)}
-@keyframes pop{0%{transform:translateY(-8px) scale(.85);opacity:.3}100%{transform:none;opacity:1}}
-h1{background:linear-gradient(90deg,var(--text),var(--accent),var(--text));background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite}
-@keyframes shine{to{background-position:200% 0}}
-.fill{background:linear-gradient(90deg,var(--accent),#ffd43b,var(--accent));background-size:200% 100%;animation:shine 3s linear infinite}
-.card,.box{animation-fill-mode:both}
-.card{animation:rise .8s ease both}
-@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.stats b{display:block;font-size:1.5rem;color:var(--text);font-variant-numeric:tabular-nums}
+.stats span{color:var(--muted);font-size:.8rem}
+.tg{display:block;width:max-content;max-width:100%;margin:22px auto 0;padding:12px 26px;border-radius:99px;background:linear-gradient(90deg,var(--o1),var(--o2));color:#1a1005;font-weight:700;text-decoration:none;text-align:center}
+.tg:active{transform:scale(.97)}
+.dots{display:grid;grid-template-columns:repeat(auto-fill,minmax(10px,1fr));gap:4px;margin-top:12px}
+.dots i{display:block;aspect-ratio:1;border-radius:50%;background:var(--track)}
+.dots i.p{background:var(--o1);opacity:.85}
+.dots i.t{background:var(--o2);animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.6)}}
+.fact{text-align:center;color:var(--text);margin:16px 0 0;font-size:.95rem}
+.msg{text-align:center;color:var(--muted);margin-top:18px;font-size:.95rem}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.box{opacity:1;transform:none}}
 </style>
 </head>
 <body>
-<canvas id="bg"></canvas>
+<canvas id="cv"></canvas>
 <main>
   <h1 id="title">နှစ်ကုန်ရန် ကျန်ချိန်</h1>
   <p class="sub" id="sub"></p>
-  <div class="grid">
-    <div class="box"><div class="num" id="d">0</div><div class="lbl">ရက်</div></div>
-    <div class="box"><div class="num" id="h">0</div><div class="lbl">နာရီ</div></div>
-    <div class="box"><div class="num" id="m">0</div><div class="lbl">မိနစ်</div></div>
-    <div class="box"><div class="num" id="s">0</div><div class="lbl">စက္ကန့်</div></div>
-  </div>
+  <div class="grid" id="grid"></div>
   <div class="card">
-    <div class="row"><span>ဒီနှစ် ကုန်ဆုံးပြီး</span><span id="pct">0%</span></div>
+    <div class="row"><span>ဒီနှစ် ကုန်ဆုံးပြီး</span><b id="pct">0%</b></div>
     <div class="bar"><div class="fill" id="fill"></div></div>
   </div>
   <div class="card stats">
     <div><b id="wk">0</b><span>ရက်သတ္တပတ်</span></div>
-    <div><b id="we">0</b><span>စနေ၊တနင်္ဂနွေ</span></div>
+    <div><b id="we">0</b><span>စနေတနင်္ဂနွေ</span></div>
     <div><b id="hr">0</b><span>စုစုပေါင်းနာရီ</span></div>
   </div>
-  <p class="msg" id="msg"></p>
+  <div class="card"><div class="row"><span>ဒီနှစ် ရက်တွေအားလုံး</span><b id="dayno">0</b></div><div class="dots" id="dots"></div></div>
+  <p class="fact" id="fact"></p>
+  <a class="tg" href="https://t.me/mrzin2831" target="_blank" rel="noopener">Telegram channel ဝင်ရန် 📢</a>
+  <p class="msg" id="msg">အချိန်ကို တန်ဖိုးရှိရှိ သုံးကြစို့ ⏳</p>
 </main>
 <script>
 (function(){
-  var year=new Date().getFullYear();
-  var start=new Date(year,0,1), end=new Date(year+1,0,1);
   var $=function(i){return document.getElementById(i)};
-  var mm="၀၁၂၃၄၅၆၇၈၉";
-  function my(n){return String(n).replace(/\d/g,function(c){return mm[c]})}
-  $("title").textContent=my(year)+" ပြီးဆုံးရန် ကျန်ချိန်";
-  $("sub").textContent=my(year+1)+" ဇန်နဝါရီ ၁ ရက် အထိ";
+  var year,start,end;
+  function setYear(){year=new Date().getFullYear();start=new Date(year,0,1);end=new Date(year+1,0,1)}
+  setYear();
+  $("title").textContent=year+" ပြီးဆုံးရန် ကျန်ချိန်";
+  $("sub").textContent=(year+1)+" ဇန်နဝါရီ 1 ရက် အထိ";
+  var units=[["d","ရက်"],["h","နာရီ"],["m","မိနစ်"],["s","စက္ကန့်"]];
+  $("grid").innerHTML=units.map(function(u){return '<div class="box"><div class="num" id="'+u[0]+'">0</div><div class="lbl">'+u[1]+'</div></div>'}).join("");
+  var last={},done=false;
+  function setU(k,v){
+    var el=$(k);
+    if(last[k]!==v){
+      el.textContent=v;
+      if(last[k]!==undefined&&el.animate)el.animate([{transform:"scale(1.25)",opacity:.5},{transform:"scale(1)",opacity:1}],{duration:320,easing:"ease-out"});
+      last[k]=v;
+    }
+  }
   function tick(){
-    var now=new Date(), diff=end-now;
+    var now=new Date(),diff=end-now;
     if(diff<=0){
-      ["d","h","m","s"].forEach(function(i){$(i).textContent=my(0)});
-      $("msg").textContent="🎉 မင်္ဂလာရှိသော နှစ်သစ်ကူးပါစေ!";
+      if(!done){done=true;["d","h","m","s"].forEach(function(k){setU(k,0)});setTimeout(rollOver,20000);$("msg").textContent="🎉 မင်္ဂလာရှိသော နှစ်သစ်ကူးပါစေ!";finale()}
       return;
     }
     var sec=Math.floor(diff/1000);
-    $("d").textContent=my(Math.floor(sec/86400));
-    $("h").textContent=my(Math.floor(sec%86400/3600));
-    $("m").textContent=my(Math.floor(sec%3600/60));
-    var sv=my(sec%60);
-    if($("s").textContent!==sv){$("s").textContent=sv;$("s").classList.remove("pop");void $("s").offsetWidth;$("s").classList.add("pop");}
+    setU("d",Math.floor(sec/86400));setU("h",Math.floor(sec%86400/3600));setU("m",Math.floor(sec%3600/60));setU("s",sec%60);
     var pct=(now-start)/(end-start)*100;
-    $("pct").textContent=my(pct.toFixed(1))+"%";
+    $("pct").textContent=pct.toFixed(1)+"%";
     $("fill").style.width=pct+"%";
-    var days=Math.ceil(diff/86400000);
-    $("wk").textContent=my(Math.floor(days/7));
-    var we=0;
-    for(var i=0;i<days;i++){
-      var dt=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i).getDay();
-      if(dt===0||dt===6)we++;
-    }
-    $("we").textContent=my(we);
-    $("hr").textContent=my(Math.floor(sec/3600).toLocaleString("en-US"));
-    $("msg").textContent="အချိန်ကို တန်ဖိုးရှိရှိ သုံးကြစို့ ⏳";
+    var days=Math.ceil(diff/86400000),we=0;
+    for(var i=0;i<days;i++){var w=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i).getDay();if(w===0||w===6)we++}
+    $("wk").textContent=Math.floor(days/7);
+    $("we").textContent=we;
+    $("hr").textContent=Math.floor(sec/3600).toLocaleString("en-US");
+    drawDots(now);
+    var mon=0;for(var q=0;q<days;q++){if(new Date(now.getFullYear(),now.getMonth(),now.getDate()+q).getDay()===1)mon++}
+    var facts=[
+      "ကျန်ချိန်နဲ့ ရုပ်ရှင်ကား "+Math.floor(sec/7200)+" ကား ကြည့်လို့ရတယ် 🎬",
+      "အိပ်ရေးဝဝ အိပ်ရမယ့် ညပေါင်း "+days+" ည 😴",
+      "ကျန်တဲ့ စနေတနင်္ဂနွေ "+we+" ရက်၊ အနားယူဖို့ မမေ့နဲ့ ☕",
+      "ကျန်တဲ့ တနင်္လာနေ့ "+mon+" ရက်ပဲ ရှိတော့တယ် 😅"
+    ];
+    if(++ft%8===1)fi=(fi+1)%facts.length;
+    $("fact").textContent=facts[fi];
   }
-  /* AI neural-network background */
-  var cv=$("bg"),cx=cv.getContext("2d"),W,H,pts=[],ptr={x:-999,y:-999};
-  var still=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function size(){
-    var r=window.devicePixelRatio||1;W=innerWidth;H=innerHeight;
-    cv.width=W*r;cv.height=H*r;cx.setTransform(r,0,0,r,0,0);
-    var n=Math.min(70,Math.floor(W*H/14000));pts=[];
-    for(var i=0;i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4});
+  var dotKey="",ft=0,fi=0;
+  function drawDots(now){
+    var total=Math.round((end-start)/86400000),day=Math.floor((now-start)/86400000)+1,key=year+"-"+day;
+    if(key===dotKey)return;dotKey=key;
+    var box=$("dots");
+    if(box.children.length!==total){var h="";for(var i=0;i<total;i++)h+="<i></i>";box.innerHTML=h}
+    for(var j=0;j<total;j++)box.children[j].className=(j+1<day)?"p":((j+1===day)?"t":"");
+    $("dayno").textContent=day+" / "+total;
   }
-  addEventListener("resize",size);size();
-  function move(e){var t=e.touches?e.touches[0]:e;ptr.x=t.clientX;ptr.y=t.clientY}
-  addEventListener("pointermove",move);addEventListener("touchmove",move,{passive:true});
-  addEventListener("pointerleave",function(){ptr.x=ptr.y=-999});
-  function frame(t){
-    var col=getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()||"#d9480f";
-    cx.clearRect(0,0,W,H);cx.strokeStyle=col;cx.fillStyle=col;
+  function rollOver(){
+    setYear();done=false;last={};
+    $("title").textContent=year+" ပြီးဆုံးရန် ကျန်ချိန်";
+    $("sub").textContent=(year+1)+" ဇန်နဝါရီ 1 ရက် အထိ";
+    $("msg").textContent="🎉 "+year+" မင်္ဂလာရှိသော နှစ်သစ်ပါ!";
+    setTimeout(function(){$("msg").textContent="အချိန်ကို တန်ဖိုးရှိရှိ သုံးကြစို့ ⏳"},3600000);
+    tick();
+  }
+  tick();setInterval(tick,1000);
+
+  // light particle network + new-year fireworks
+  var cv=$("cv"),ctx=cv.getContext("2d"),W,H,dpr=Math.min(devicePixelRatio||1,1.5);
+  var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var pts=[],sparks=[],fwOn=false;
+  function dotColor(){return getComputedStyle(document.documentElement).getPropertyValue("--dot").trim()}
+  var dc=dotColor();
+  function resize(){
+    W=innerWidth;H=innerHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);
+    var n=Math.min(32,Math.floor(W*H/22000));pts=[];
+    for(var i=0;i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35});
+  }
+  resize();addEventListener("resize",resize);
+  function burst(x,y,n){for(var i=0;i<n;i++){var a=Math.random()*6.283,s=1+Math.random()*4.5;sparks.push({x:x,y:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,l:1,h:Math.floor(Math.random()*360)})}}
+  function finale(){
+    if(reduce)return;
+    fwOn=true;var c=0;
+    var iv=setInterval(function(){burst(Math.random()*W,Math.random()*H*.6,40);if(++c>20){clearInterval(iv);fwOn=false}},400);
+  }
+  function frame(){
+    requestAnimationFrame(frame);
+    if(document.hidden)return;
+    ctx.clearRect(0,0,W,H);
     for(var i=0;i<pts.length;i++){
       var p=pts[i];
-      if(!still){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;}
-      var pulse=.5+.5*Math.sin(t/700+i);
-      cx.globalAlpha=.25+.45*pulse;cx.beginPath();cx.arc(p.x,p.y,2+pulse*1.5,0,6.283);cx.fill();
+      if(!reduce){p.x+=p.vx;p.y+=p.vy}
+      if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+      ctx.fillStyle="rgba("+dc+",.8)";ctx.beginPath();ctx.arc(p.x,p.y,1.8,0,6.283);ctx.fill();
       for(var j=i+1;j<pts.length;j++){
-        var q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
-        if(d<130){cx.globalAlpha=(1-d/130)*.3;cx.beginPath();cx.moveTo(p.x,p.y);cx.lineTo(q.x,q.y);cx.stroke();}
+        var q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=dx*dx+dy*dy;
+        if(d<14400){ctx.strokeStyle="rgba("+dc+","+((1-d/14400)*.35)+")";ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke()}
       }
-      var mx=p.x-ptr.x,my2=p.y-ptr.y,md=Math.sqrt(mx*mx+my2*my2);
-      if(md<170){cx.globalAlpha=(1-md/170)*.6;cx.beginPath();cx.moveTo(p.x,p.y);cx.lineTo(ptr.x,ptr.y);cx.stroke();}
     }
-    cx.globalAlpha=1;
-    if(!still)requestAnimationFrame(frame);
+    for(var k=sparks.length-1;k>=0;k--){
+      var s=sparks[k];s.x+=s.vx;s.y+=s.vy;s.vy+=.06;s.vx*=.985;s.l-=.016;
+      if(s.l<=0){sparks.splice(k,1);continue}
+      ctx.fillStyle="hsla("+s.h+",95%,65%,"+s.l+")";ctx.beginPath();ctx.arc(s.x,s.y,2.4*s.l+.4,0,6.283);ctx.fill();
+    }
   }
-  requestAnimationFrame(frame);
-  tick(); setInterval(tick,1000);
+  frame();
+  if(location.hash==="#test")setTimeout(finale,800);
 })();
 </script>
 </body>
